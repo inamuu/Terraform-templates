@@ -9,3 +9,12 @@ variable "profile_name" {}
 variable "aws_region" {
   default = "ap-northeast-1"
 }
+
+## CloudFront
+variable "site_domain" {
+  default = "inamuu-com"
+}
+
+variable "alias_site_domain" {
+  default = ["www.inamuu.com"]
+}

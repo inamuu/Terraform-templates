@@ -18,3 +18,8 @@ variable "site_domain" {
 variable "alias_site_domain" {
   default = ["www.inamuu.com"]
 }
+
+## ECS
+variable "aws_ecs_service_desired_count_app" {
+  default = 1
+}

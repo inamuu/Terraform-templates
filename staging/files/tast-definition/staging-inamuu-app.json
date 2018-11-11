@@ -1,0 +1,23 @@
+[
+  {
+    "image": "XXXXXXXXXXXXX.dkr.ecr.ap-northeast-1.amazonaws.com/staging-inamuu-app",
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "/ecs/staging-inamuu-app",
+        "awslogs-region": "ap-northeast-1",
+        "awslogs-stream-prefix": "ecs"
+      }
+    },
+    "cpu": 256,
+    "memory": 512,
+    "networkMode": "awsvpc",
+    "name": "staging-inamuu-app",
+    "portMappings": [
+      {
+        "containerPort": 80,
+        "protocol": "tcp"
+      }
+    ]
+  }
+]

@@ -1,4 +1,3 @@
-
 ## Cluster
 resource "aws_ecs_cluster" "staging-inamuu" {
   name = "staging-inamuu"
@@ -15,8 +14,9 @@ resource "aws_ecs_service" "staging-inamuu-service" {
   lifecycle {
     ignore_changes = [
       "desired_count",
-      #"task_definition",
     ]
+
+    #"task_definition",
   }
 
   load_balancer {

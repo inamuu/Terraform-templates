@@ -45,7 +45,7 @@ resource "aws_ecs_task_definition" "staging-inamuu-task" {
   network_mode             = "awsvpc"
   task_role_arn            = "arn:aws:iam::${var.aws_account_id}:role/ecsTaskExecutionRole"
   execution_role_arn       = "arn:aws:iam::${var.aws_account_id}:role/ecsTaskExecutionRole"
-  cpu                      = 2048
-  memory                   = 4096
+  cpu                      = 256
+  memory                   = 512
   container_definitions    = "${file("files/task-definitions/staging-inamuu-app.json")}"
 }

@@ -8,3 +8,8 @@ resource "aws_s3_bucket" "website_hosting_inamuu_com" {
     error_document = "error.html"
   }
 }
+
+resource "aws_s3_bucket" "log_bucket" {
+   bucket = "log_bucket"
+   acl    = "log-delivery-write"
+ }

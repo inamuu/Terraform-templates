@@ -3,6 +3,18 @@ resource "aws_ecs_cluster" "staging-inamuu" {
   name = "staging-inamuu"
 }
 
+## Task Definition
+resource "aws_ecs_task_definition" "staging-inamuu-task" {
+  family                   = "staging-inamuu"
+  requires_compatibilities = ["FARGATE"]
+  network_mode             = "awsvpc"
+  task_role_arn            = "arn:aws:iam::${var.aws_account_id}:role/ecsTaskExecutionRole"
+  execution_role_arn       = "arn:aws:iam::${var.aws_account_id}:role/ecsTaskExecutionRole"
+  cpu                      = 256
+  memory                   = 512
+  container_definitions    = "${file("files/task-definitions/staging-inamuu-app.json")}"
+}
+
 ## Service
 resource "aws_ecs_service" "staging-inamuu-service" {
   cluster                            = "${aws_ecs_cluster.staging-inamuu.id}"
@@ -36,16 +48,4 @@ resource "aws_ecs_service" "staging-inamuu-service" {
   }
 
   task_definition = "${aws_ecs_task_definition.staging-inamuu-task.arn}"
-}
-
-## Task Definition
-resource "aws_ecs_task_definition" "staging-inamuu-task" {
-  family                   = "staging-inamuu"
-  requires_compatibilities = ["FARGATE"]
-  network_mode             = "awsvpc"
-  task_role_arn            = "arn:aws:iam::${var.aws_account_id}:role/ecsTaskExecutionRole"
-  execution_role_arn       = "arn:aws:iam::${var.aws_account_id}:role/ecsTaskExecutionRole"
-  cpu                      = 256
-  memory                   = 512
-  container_definitions    = "${file("files/task-definitions/staging-inamuu-app.json")}"
 }

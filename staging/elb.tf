@@ -18,6 +18,17 @@ resource "aws_lb_target_group" "staging-inamuu" {
   vpc_id               = "${aws_vpc.staging-inamuu-vpc.id}"
   target_type          = "ip"
   deregistration_delay = "10"
+
+  health_check {
+    protocol            = "HTTP"
+    path                = "/ping"
+    port                = 80
+    healthy_threshold   = 5
+    unhealthy_threshold = 2
+    timeout             = 5
+    interval            = 10
+    matcher             = 200
+  }
 }
 
 resource "aws_alb_listener" "staging-inamuu" {

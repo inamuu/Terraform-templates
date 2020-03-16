@@ -12,14 +12,14 @@ resource "aws_ecs_task_definition" "staging-inamuu-task" {
   execution_role_arn       = "arn:aws:iam::${var.aws_account_id}:role/ecsTaskExecutionRole"
   cpu                      = 256
   memory                   = 512
-  container_definitions    = "${file("files/task-definitions/staging-inamuu-app.json")}"
+  container_definitions    = file("files/task-definitions/staging-inamuu-app.json")
 }
 
 ## Service
 resource "aws_ecs_service" "staging-inamuu-service" {
-  cluster                            = "${aws_ecs_cluster.staging-inamuu.id}"
+  cluster                            = aws_ecs_cluster.staging-inamuu.id
   deployment_minimum_healthy_percent = 50
-  desired_count                      = "${var.aws_ecs_service_desired_count_app}"
+  desired_count                      = var.aws_ecs_service_desired_count_app
   launch_type                        = "FARGATE"
   name                               = "staging-inamuu-service"
 
@@ -34,18 +34,18 @@ resource "aws_ecs_service" "staging-inamuu-service" {
   load_balancer {
     container_name   = "staging-inamuu-app"
     container_port   = "80"
-    target_group_arn = "${aws_lb_target_group.staging-inamuu-app.arn}"
+    target_group_arn = aws_lb_target_group.staging-inamuu-app.arn
   }
 
   network_configuration {
     subnets = [
-      "${aws_subnet.staging-inamuu-app-1a.id}",
+      aws_subnet.staging-inamuu-app-1a.id,
     ]
 
     security_groups = [
-      "${aws_security_group.staging-inamuu-app.id}",
+      aws_security_group.staging-inamuu-app.id,
     ]
   }
 
-  task_definition = "${aws_ecs_task_definition.staging-inamuu-task.arn}"
+  task_definition = aws_ecs_task_definition.staging-inamuu-task.arn
 }

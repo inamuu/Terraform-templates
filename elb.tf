@@ -2,8 +2,8 @@ resource "aws_lb" "staging-inamuu" {
   name                       = "staging-inamuu"
   internal                   = false
   load_balancer_type         = "application"
-  security_groups            = ["${aws_security_group.staging-inamuu-alb.id}"]
-  subnets                    = ["${aws_subnet.staging-public-1a.id}"]
+  security_groups            = ["aws_security_group.staging-inamuu-alb.id"]
+  subnets                    = ["aws_subnet.staging-public-1a.id"]
   enable_deletion_protection = true
 
   tags {
@@ -15,7 +15,7 @@ resource "aws_lb_target_group" "staging-inamuu" {
   name                 = "staging-inamuu-lb-tg"
   port                 = 80
   protocol             = "HTTP"
-  vpc_id               = "${aws_vpc.staging-inamuu-vpc.id}"
+  vpc_id               = aws_vpc.staging-inamuu-vpc.id
   target_type          = "ip"
   deregistration_delay = "10"
 
@@ -32,7 +32,7 @@ resource "aws_lb_target_group" "staging-inamuu" {
 }
 
 resource "aws_alb_listener" "staging-inamuu" {
-  load_balancer_arn = "${aws_lb.staging-inamuu.arn}"
+  load_balancer_arn = aws_lb.staging-inamuu.arn
   port              = "80"
   protocol          = "HTTP"
 
@@ -48,14 +48,14 @@ resource "aws_alb_listener" "staging-inamuu" {
 }
 
 resource "aws_alb_listener" "staging-inamuu-https" {
-  load_balancer_arn = "${aws_lb.staging-inamuu.arn}"
+  load_balancer_arn = aws_lb.staging-inamuu.arn
   port              = "443"
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-2015-05"
-  certificate_arn   = "${aws_acm_certificate.staging-inamuu-com.arn}"
+  certificate_arn   = aws_acm_certificate.staging-inamuu-com.arn
 
   default_action {
-    target_group_arn = "${aws_lb_target_group.staging-inamuu.arn}"
+    target_group_arn = aws_lb_target_group.staging-inamuu.arn
     type             = "forward"
   }
 }

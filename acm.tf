@@ -15,8 +15,8 @@ resource "aws_acm_certificate" "inamuu-com" {
 
 ## For CloudFront
 provider "aws" {
-  access_key = "${var.aws_access_key}"
-  secret_key = "${var.aws_secret_key}"
+  access_key = var.aws_access_key
+  secret_key = var.aws_secret_key
   alias      = "us-east"
   region     = "us-east-1"
 }

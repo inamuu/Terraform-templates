@@ -7,3 +7,4 @@ This is Terraform templates for AWS.
 - S3
 - ECS
 - ECR
+- Kinesis

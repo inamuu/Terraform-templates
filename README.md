@@ -8,3 +8,9 @@ This is Terraform templates for AWS.
 - ECS
 - ECR
 - Kinesis
+- VPC
+  - Internet Gateway
+  - Subnet
+  - Route Table
+  - Route Table Association
+  - NAT Gateway

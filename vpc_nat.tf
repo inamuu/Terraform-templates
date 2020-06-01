@@ -10,7 +10,7 @@ resource "aws_eip" "example-natgw-eip" {
 
 resource "aws_nat_gateway" "example-natgw" {
   allocation_id = aws_eip.example-natgw-eip.id
-  subnet_id     = aws_subnet.example-public.id
+  subnet_id     = aws_subnet.example-public-1a.id
   depends_on    = [aws_internet_gateway.igw]
 
   tags = {

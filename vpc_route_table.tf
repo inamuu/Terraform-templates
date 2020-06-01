@@ -1,5 +1,5 @@
 ## Internet Gateway
-resource "aws_route_table" "example-route-igw" {
+resource "aws_route_table" "example-igw" {
   vpc_id = aws_vpc.example.id
 
   route {
@@ -8,12 +8,12 @@ resource "aws_route_table" "example-route-igw" {
   }
 
   tags = {
-    Name = "example-route-igw"
+    Name = "example-igw"
   }
 }
 
 ## NAT Gateway
-resource "aws_route_table" "example-route-ngw" {
+resource "aws_route_table" "example-natgw" {
   vpc_id = aws_vpc.example.id
 
   route {
@@ -22,15 +22,6 @@ resource "aws_route_table" "example-route-ngw" {
   }
 
   tags = {
-    "Name" = "example-route-ngw"
-  }
-}
-
-## Private Network
-resource "aws_route_table" "example-route-private" {
-  vpc_id = aws_vpc.example.id
-
-  tags = {
-    "Name" = "example-route-private"
+    "Name" = "example-natgw"
   }
 }

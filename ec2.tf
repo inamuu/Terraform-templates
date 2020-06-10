@@ -4,7 +4,7 @@ resource "aws_instance" "example" {
   instance_type           = var.instance_type
   disable_api_termination = false
   key_name                = var.key_name
-  vpc_security_group_ids  = [aws_security_group.proxy.id]
+  vpc_security_group_ids  = [aws_security_group.example.id]
   subnet_id               = lookup(var.public_subnets_id, count.index % 2)
 
   root_block_device {

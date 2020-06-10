@@ -19,6 +19,30 @@ variable "alias_site_domain" {
   default = ["www.inamuu.com"]
 }
 
+## EC2
+variable "ami" {
+  default = "ami-0a1c2ec61571737db" ## AmazonLinux2
+}
+
+variable "key_name" {
+  default = "example"
+}
+
+variable "instance_type" {
+  default = "t3a.small"
+}
+
+variable "volume_size" {
+  default = "20"
+}
+
+variable "public_subnets_id" {
+  default = {
+    "0" = "subnet-XXXXX"
+    "1" = "subnet-XXXXX"
+  }
+}
+
 ## ECS
 variable "aws_ecs_service_desired_count_app" {
   default = 1

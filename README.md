@@ -4,10 +4,11 @@ This is Terraform templates for AWS.
 ## Add below services
 
 - CloudFront
-- S3
+- EC2
 - ECS
 - ECR
 - Kinesis
+- S3
 - VPC
   - Internet Gateway
   - Subnet

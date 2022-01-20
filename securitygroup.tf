@@ -18,6 +18,9 @@ resource "aws_security_group" "examples" {
     cidr_blocks = ["0.0.0.0/16"]
   }
 
+  ### If you want to disable ingress access like only ssm
+  # ingress = []
+
   egress {
     from_port   = 0
     to_port     = 0

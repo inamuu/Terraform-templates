@@ -1,3 +1,3 @@
-resource "random_id" "example_random_id" {
+resource "random_id" "specify_id" {
   byte_length = 8
 }

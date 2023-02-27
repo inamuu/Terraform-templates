@@ -1,0 +1,8 @@
+# common
+.env
+.envrc
+
+# terraform
+.terraform
+*.tfvars
+

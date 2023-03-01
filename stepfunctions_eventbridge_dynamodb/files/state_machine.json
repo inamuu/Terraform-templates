@@ -19,27 +19,26 @@
                     "ErrorEquals": [
                         "DynamoDB.ConditionalCheckFailedException"
                     ],
-                    "Next": "Already Executed"
+                    "Next": "NotifyFailure"
                 },
                 {
                     "ErrorEquals": [
                         "States.TaskFailed"
                     ],
-                    "Next": "Handle Error"
+                    "Next": "NotifyFailure"
                 }
             ],
             "ResultPath": null
+        },
+        "NotifyFailure": {
+            "Type": "Task",
+            "Resource": "${aws_lambda_function}",
+            "End": true
         },
         "Do Something": {
             "Type": "Wait",
             "Seconds": 60,
             "End": true
-        },
-        "Handle Error": {
-            "Type": "Fail"
-        },
-        "Already Executed": {
-            "Type": "Fail"
         }
     }
 }

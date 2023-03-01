@@ -27,8 +27,8 @@ resource "aws_iam_role" "stepfunctions" {
         },
         {
           Effect   = "Allow"
-          Action   = "sns:Publish"
-          Resource = aws_sns_topic.sns_topic.arn
+          Action   = "lambda:InvokeFunction"
+          Resource = aws_lambda_function.lambda_slack.arn
         }
       ]
     })
@@ -40,6 +40,6 @@ resource "aws_sfn_state_machine" "state_machine" {
   role_arn = aws_iam_role.stepfunctions.arn
   definition = templatefile("${path.module}/files/state_machine.json", {
     dynamodb_table_name = aws_dynamodb_table.dynamodb_table.name
-    sns_topic_arn       = aws_sns_topic.sns_topic.arn
+    aws_lambda_function = aws_lambda_function.lambda_slack.arn
   })
 }

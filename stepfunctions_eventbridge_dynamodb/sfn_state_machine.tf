@@ -24,6 +24,11 @@ resource "aws_iam_role" "stepfunctions" {
           Effect   = "Allow"
           Action   = "dynamodb:PutItem"
           Resource = aws_dynamodb_table.dynamodb_table.arn
+        },
+        {
+          Effect   = "Allow"
+          Action   = "sns:Publish"
+          Resource = aws_sns_topic.sns_topic.arn
         }
       ]
     })
@@ -35,5 +40,6 @@ resource "aws_sfn_state_machine" "state_machine" {
   role_arn = aws_iam_role.stepfunctions.arn
   definition = templatefile("${path.module}/files/state_machine.json", {
     dynamodb_table_name = aws_dynamodb_table.dynamodb_table.name
+    sns_topic_arn       = aws_sns_topic.sns_topic.arn
   })
 }

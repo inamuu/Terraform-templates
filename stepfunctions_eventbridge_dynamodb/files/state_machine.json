@@ -1,0 +1,45 @@
+{
+    "StartAt": "DynamoDB PutItem",
+    "States": {
+        "DynamoDB PutItem": {
+            "Type": "Task",
+            "Resource": "arn:aws:states:::dynamodb:putItem",
+            "Parameters": {
+                "TableName": "${dynamodb_table_name}",
+                "Item": {
+                    "eventId": {
+                        "S.$": "$.id"
+                    }
+                },
+                "ConditionExpression": "attribute_not_exists(eventId)"
+            },
+            "Next": "Do Something",
+            "Catch": [
+                {
+                    "ErrorEquals": [
+                        "DynamoDB.ConditionalCheckFailedException"
+                    ],
+                    "Next": "Already Executed"
+                },
+                {
+                    "ErrorEquals": [
+                        "States.TaskFailed"
+                    ],
+                    "Next": "Handle Error"
+                }
+            ],
+            "ResultPath": null
+        },
+        "Do Something": {
+            "Type": "Wait",
+            "Seconds": 60,
+            "End": true
+        },
+        "Handle Error": {
+            "Type": "Fail"
+        },
+        "Already Executed": {
+            "Type": "Fail"
+        }
+    }
+}

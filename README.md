@@ -1,17 +1,9 @@
 # For My Terraform Templates
-This is Terraform templates for AWS.
 
-## Add below services
+Copy from template directory.
 
-- CloudFront
-- EC2
-- ECS
-- ECR
-- Kinesis
-- S3
-- VPC
-  - Internet Gateway
-  - Subnet
-  - Route Table
-  - Route Table Association
-  - NAT Gateway
+## How to use
+
+- AWS Profile is set from .envrc
+- Terraform state file is use from local by default.
+

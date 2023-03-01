@@ -22,10 +22,5 @@ resource "awscc_chatbot_slack_channel_configuration" "slack_channge_config" {
   iam_role_arn       = aws_iam_role.chatbot.arn
   slack_channel_id   = var.slack_channel_id
   slack_workspace_id = var.slack_workspace_id
+  sns_topic_arns     = [aws_sns_topic.sns_topic.arn]
 }
-
-#resource "awscc_chatbot_slack_configuration" "slack_config" {
-#  configuration_name = "${var.default_prefix}-${random_id.specify_id.hex}"
-#  bot_name           = "${var.default_prefix}-${random_id.specify_id.hex}"
-#  slack_channel_id   = var.slack_channel_id
-#}

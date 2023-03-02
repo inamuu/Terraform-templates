@@ -13,34 +13,44 @@
                 },
                 "ConditionExpression": "attribute_not_exists(eventId)"
             },
-            "Next": "Do Something",
+            "Next": "NotifyStart",
             "Catch": [
                 {
                     "ErrorEquals": [
                         "DynamoDB.ConditionalCheckFailedException"
                     ],
-                    "Next": "NotifySlack",
+                    "Next": "NotifyEnd",
                     "ResultPath": "$.put_item_result"
                 },
                 {
                     "ErrorEquals": [
                         "States.TaskFailed"
                     ],
-                    "Next": "NotifySlack",
+                    "Next": "NotifyEnd",
                     "ResultPath": "$.put_item_result"
                 }
             ],
             "ResultPath": "$.put_item_result"
         },
-        "NotifySlack": {
+        "NotifyStart": {
             "Type": "Task",
-            "Resource": "${aws_lambda_function}",
+            "Resource": "${aws_lambda_function_slack_notify}",
+            "Next": "Preprocess"
+        },
+        "NotifyEnd": {
+            "Type": "Task",
+            "Resource": "${aws_lambda_function_slack_notify}",
             "End": true
+        },
+        "Preprocess": {
+            "Type": "Task",
+            "Resource": "${aws_lambda_function_preprocess}",
+            "Next": "Do Something"
         },
         "Do Something": {
             "Type": "Wait",
             "Seconds": 10,
-            "Next": "NotifySlack"
+            "Next": "NotifyEnd"
         }
     }
 }

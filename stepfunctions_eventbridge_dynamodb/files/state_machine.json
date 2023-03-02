@@ -19,26 +19,28 @@
                     "ErrorEquals": [
                         "DynamoDB.ConditionalCheckFailedException"
                     ],
-                    "Next": "NotifyFailure"
+                    "Next": "NotifySlack",
+                    "ResultPath": "$.put_item_result"
                 },
                 {
                     "ErrorEquals": [
                         "States.TaskFailed"
                     ],
-                    "Next": "NotifyFailure"
+                    "Next": "NotifySlack",
+                    "ResultPath": "$.put_item_result"
                 }
             ],
-            "ResultPath": null
+            "ResultPath": "$.put_item_result"
         },
-        "NotifyFailure": {
+        "NotifySlack": {
             "Type": "Task",
             "Resource": "${aws_lambda_function}",
             "End": true
         },
         "Do Something": {
             "Type": "Wait",
-            "Seconds": 60,
-            "End": true
+            "Seconds": 10,
+            "Next": "NotifySlack"
         }
     }
 }

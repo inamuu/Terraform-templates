@@ -34,3 +34,23 @@ data "aws_iam_policy_document" "eventbridge_scheduler_assume_policy" {
     }
   }
 }
+
+resource "aws_scheduler_schedule" "scheduler" {
+  name                         = "${var.default_prefix}-${random_id.specify_id.hex}"
+  state                        = "DISABLED"
+  schedule_expression          = "cron(*/2 18 * * ? *)"
+  schedule_expression_timezone = "Asia/Tokyo"
+  flexible_time_window {
+    mode = "OFF"
+  }
+  target {
+    arn      = aws_sfn_state_machine.state_machine.arn
+    role_arn = aws_iam_role.eventbridge_scheduler.arn
+    input    = <<EOT
+{
+  "Name" : "event-schedule-test",
+  "id"   : "<aws.scheduler.execution-id>"
+}
+EOT
+  }
+}

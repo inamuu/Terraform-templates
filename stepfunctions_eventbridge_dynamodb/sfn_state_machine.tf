@@ -26,9 +26,12 @@ resource "aws_iam_role" "stepfunctions" {
           Resource = aws_dynamodb_table.dynamodb_table.arn
         },
         {
-          Effect   = "Allow"
-          Action   = "lambda:InvokeFunction"
-          Resource = aws_lambda_function.lambda_slack.arn
+          Effect = "Allow"
+          Action = "lambda:InvokeFunction"
+          Resource = [
+            aws_lambda_function.lambda_slack.arn,
+            aws_lambda_function.lambda_preprocess.arn
+          ]
         }
       ]
     })

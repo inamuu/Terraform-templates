@@ -38,7 +38,7 @@ data "aws_iam_policy_document" "eventbridge_scheduler_assume_policy" {
 resource "aws_scheduler_schedule" "scheduler" {
   name                         = "${var.default_prefix}-${random_id.specify_id.hex}"
   state                        = "DISABLED"
-  schedule_expression          = "cron(*/2 18 * * ? *)"
+  schedule_expression          = "cron(*/2 12 * * ? *)"
   schedule_expression_timezone = "Asia/Tokyo"
   flexible_time_window {
     mode = "OFF"

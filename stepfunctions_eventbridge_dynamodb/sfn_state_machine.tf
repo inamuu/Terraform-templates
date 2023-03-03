@@ -30,7 +30,8 @@ resource "aws_iam_role" "stepfunctions" {
           Action = "lambda:InvokeFunction"
           Resource = [
             aws_lambda_function.lambda_slack.arn,
-            aws_lambda_function.lambda_preprocess.arn
+            aws_lambda_function.lambda_preprocess.arn,
+            aws_lambda_function.lambda_dosomething.arn
           ]
         }
       ]
@@ -45,5 +46,6 @@ resource "aws_sfn_state_machine" "state_machine" {
     dynamodb_table_name              = aws_dynamodb_table.dynamodb_table.name
     aws_lambda_function_slack_notify = aws_lambda_function.lambda_slack.arn
     aws_lambda_function_preprocess   = aws_lambda_function.lambda_preprocess.arn
+    aws_lambda_function_dosomething  = aws_lambda_function.lambda_dosomething.arn
   })
 }

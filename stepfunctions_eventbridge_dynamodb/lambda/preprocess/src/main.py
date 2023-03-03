@@ -7,7 +7,7 @@ http = urllib3.PoolManager()
 
 def lambda_handler(event, context):
     url = os.environ['slack_webhook_url']
-    msg = {"text": "preprocess"}
+    msg = {"text": event}
     encoded_msg = json.dumps(msg).encode("utf-8")
     resp = http.request("POST", url, body=encoded_msg)
     print(

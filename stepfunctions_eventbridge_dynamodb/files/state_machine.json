@@ -9,9 +9,9 @@
                 "Item": {
                     "eventId": {
                         "S.$": "$.id"
-                    }
-                },
-                "ConditionExpression": "attribute_not_exists(eventId)"
+                    },
+                    "ConditionExpression": "attribute_not_exists(eventId)"
+                }
             },
             "Next": "NotifyStart",
             "Catch": [
@@ -20,37 +20,39 @@
                         "DynamoDB.ConditionalCheckFailedException"
                     ],
                     "Next": "NotifyEnd",
-                    "ResultPath": "$.put_item_result"
+                    "ResultPath": "$.result"
                 },
                 {
                     "ErrorEquals": [
                         "States.TaskFailed"
                     ],
                     "Next": "NotifyEnd",
-                    "ResultPath": "$.put_item_result"
+                    "ResultPath": "$.result"
                 }
             ],
-            "ResultPath": "$.put_item_result"
+            "ResultPath": "$.result"
         },
         "NotifyStart": {
             "Type": "Task",
             "Resource": "${aws_lambda_function_slack_notify}",
-            "Next": "PreProcess"
+            "Next": "PreProcess",
+            "InputPath": "$"
         },
         "NotifyEnd": {
             "Type": "Task",
             "Resource": "${aws_lambda_function_slack_notify}",
+            "InputPath": "$",
             "End": true
         },
         "PreProcess": {
             "Type": "Task",
             "Resource": "${aws_lambda_function_preprocess}",
-            "Next": "DoSomething"
+            "Next": "DoSomething",
         },
         "DoSomething": {
             "Type": "Task",
             "Resource": "${aws_lambda_function_dosomething}",
-            "Next": "Wait"
+            "Next": "Wait",
         },
         "Wait": {
             "Type": "Wait",

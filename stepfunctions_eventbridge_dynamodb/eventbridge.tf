@@ -37,7 +37,7 @@ data "aws_iam_policy_document" "eventbridge_scheduler_assume_policy" {
 
 resource "aws_scheduler_schedule" "scheduler" {
   name                         = "${var.default_prefix}-${random_id.specify_id.hex}"
-  state                        = "DISABLED"
+  state                        = "ENABLED"
   schedule_expression          = "cron(* 17 * * ? *)"
   schedule_expression_timezone = "Asia/Tokyo"
   flexible_time_window {
@@ -48,7 +48,7 @@ resource "aws_scheduler_schedule" "scheduler" {
     role_arn = aws_iam_role.eventbridge_scheduler.arn
     input    = <<EOT
 {
-  "Name" : "event-schedule-test",
+  "taskName" : "event-schedule-test",
   "id"   : "<aws.scheduler.execution-id>"
 }
 EOT

@@ -35,24 +35,22 @@
         "NotifyStart": {
             "Type": "Task",
             "Resource": "${aws_lambda_function_slack_notify}",
-            "Next": "PreProcess",
-            "InputPath": "$"
+            "Next": "PreProcess"
         },
         "NotifyEnd": {
             "Type": "Task",
             "Resource": "${aws_lambda_function_slack_notify}",
-            "InputPath": "$",
             "End": true
         },
         "PreProcess": {
             "Type": "Task",
             "Resource": "${aws_lambda_function_preprocess}",
-            "Next": "DoSomething",
+            "Next": "DoSomething"
         },
         "DoSomething": {
             "Type": "Task",
             "Resource": "${aws_lambda_function_dosomething}",
-            "Next": "Wait",
+            "Next": "Wait"
         },
         "Wait": {
             "Type": "Wait",

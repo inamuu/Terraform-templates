@@ -101,6 +101,12 @@ resource "aws_lambda_function" "lambda_dosomething" {
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
   runtime          = "python3.9"
   timeout          = 30
+
+  environment {
+    variables = {
+      slack_webhook_url = var.slack_webhook_url
+    }
+  }
 }
 
 data "archive_file" "lambda_zip_dosomething" {

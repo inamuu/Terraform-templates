@@ -12,3 +12,9 @@ resource "aws_cloudwatch_event_rule" "sfn" {
     }
   })
 }
+
+resource "aws_cloudwatch_event_target" "sns" {
+  rule      = aws_cloudwatch_event_rule.sfn.name
+  target_id = "${var.default_prefix}-${random_id.specify_id.hex}"
+  arn       = aws_sns_topic.chatbot.arn
+}

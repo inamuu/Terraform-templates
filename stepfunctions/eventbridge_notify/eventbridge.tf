@@ -1,56 +1,14 @@
-resource "aws_iam_role" "eventbridge_scheduler" {
-  name               = "${var.default_prefix}-${random_id.specify_id.hex}-EventBridge-Scheduler"
-  assume_role_policy = data.aws_iam_policy_document.eventbridge_scheduler_assume_policy.json
-  inline_policy {
-    name = "evnetbridge-scheduler-role-inline-policy"
-    policy = jsonencode({
-      Version = "2012-10-17"
-      Statement = [
-        {
-          Action = [
-            "states:StartExecution",
-          ]
-          Effect   = "Allow"
-          Resource = aws_sfn_state_machine.state_machine.arn
-        },
-      ]
-    })
-  }
-}
+resource "aws_cloudwatch_event_rule" "sfn" {
+  name        = "${var.default_prefix}-${random_id.specify_id.hex}"
+  description = "${var.default_prefix}-${random_id.specify_id.hex}"
 
-data "aws_iam_policy_document" "eventbridge_scheduler_assume_policy" {
-  statement {
-    effect = "Allow"
-
-    actions = [
-      "sts:AssumeRole",
-    ]
-
-    principals {
-      type = "Service"
-      identifiers = [
-        "scheduler.amazonaws.com",
+  event_pattern = jsonencode({
+    "source" : ["aws.states"],
+    "detail-type" : ["Step Functions Execution Status Change"],
+    "detail" : {
+      "stateMachineArn" : [
+        aws_sfn_state_machine.state_machine.arn
       ]
     }
-  }
-}
-
-resource "aws_scheduler_schedule" "scheduler" {
-  name                         = "${var.default_prefix}-${random_id.specify_id.hex}"
-  state                        = "ENABLED"
-  schedule_expression          = "cron(* 17 * * ? *)"
-  schedule_expression_timezone = "Asia/Tokyo"
-  flexible_time_window {
-    mode = "OFF"
-  }
-  target {
-    arn      = aws_sfn_state_machine.state_machine.arn
-    role_arn = aws_iam_role.eventbridge_scheduler.arn
-    input    = <<EOT
-{
-  "taskName" : "event-schedule-test",
-  "id"   : "<aws.scheduler.execution-id>"
-}
-EOT
-  }
+  })
 }

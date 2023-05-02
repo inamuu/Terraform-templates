@@ -3,6 +3,11 @@
     "States": {
         "StartPass": {
             "Type": "Pass",
+            "Next": "WaitTime"
+        },
+        "WaitTime": {
+            "Type": "Wait",
+            "Seconds": 2,
             "End": true
         }
     }

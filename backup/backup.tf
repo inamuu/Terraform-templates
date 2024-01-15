@@ -24,6 +24,7 @@ resource "aws_backup_selection" "ec2" {
     aws_instance.example.arn
   ]
 
+  // 本当に必要かはよく確認しましょう
   condition {
     string_equals {
       key   = "aws:ResourceTag/Backup"

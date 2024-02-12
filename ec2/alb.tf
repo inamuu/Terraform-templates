@@ -1,21 +1,24 @@
-resource "aws_lb" "staging-inamuu" {
-  name                       = "staging-inamuu"
+resource "aws_lb" "web" {
+  name                       = "web"
   internal                   = false
   load_balancer_type         = "application"
-  security_groups            = ["aws_security_group.staging-inamuu-alb.id"]
-  subnets                    = ["aws_subnet.staging-public-1a.id"]
+  security_groups            = ["aws_security_group.web.id"]
+  subnets                    = [
+    aws_subnet.staging-public-1a.id,
+    aws_subnet.staging-public-1c.id
+  ]
   enable_deletion_protection = true
 
-  tags {
-    Env = "staging"
+  tags = {
+    Name = "${terraform.workspace}-${var.service_name}-web"
   }
 }
 
-resource "aws_lb_target_group" "staging-inamuu" {
-  name                 = "staging-inamuu-lb-tg"
+resource "aws_lb_target_group" "web" {
+  name                 = "web"
   port                 = 80
   protocol             = "HTTP"
-  vpc_id               = aws_vpc.staging-inamuu-vpc.id
+  vpc_id               = aws_vpc.main.id
   target_type          = "ip"
   deregistration_delay = "10"
 
@@ -31,8 +34,8 @@ resource "aws_lb_target_group" "staging-inamuu" {
   }
 }
 
-resource "aws_alb_listener" "staging-inamuu" {
-  load_balancer_arn = aws_lb.staging-inamuu.arn
+resource "aws_alb_listener" "web-http" {
+  load_balancer_arn = aws_lb.web.arn
   port              = "80"
   protocol          = "HTTP"
 
@@ -47,15 +50,16 @@ resource "aws_alb_listener" "staging-inamuu" {
   }
 }
 
-resource "aws_alb_listener" "staging-inamuu-https" {
-  load_balancer_arn = aws_lb.staging-inamuu.arn
+resource "aws_alb_listener" "web-https" {
+  load_balancer_arn = aws_lb.web.arn
   port              = "443"
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-2015-05"
-  certificate_arn   = aws_acm_certificate.staging-inamuu-com.arn
+  certificate_arn   = aws_acm_certificate.main.arn
 
   default_action {
-    target_group_arn = aws_lb_target_group.staging-inamuu.arn
+    target_group_arn = aws_lb_target_group.web.arn
     type             = "forward"
   }
 }
+
